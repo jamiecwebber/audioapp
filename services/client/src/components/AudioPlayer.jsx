@@ -2,11 +2,25 @@ import React from 'react';
 import acroyali from './media/acroyali.mp3'
 import felista from './media/felista.mp3'
 
+function getTime(time) {
+	if(!isNaN(time)) {
+		return Math.floor(time / 60) + ':' + ('0' + Math.floor(time % 60)).slice(-2)
+	}
+}
+
 class AudioPlayer extends React.Component {
 	state = {
 		selectedTrack: null,
 		player: "stopped"
 	};
+	componentDidMount() {
+		this.player.addEventListener("timeupdate", e => {
+			this.setState({
+				currentTime: e.target.currentTime,
+				duration: e.target.duration
+			});
+		});
+	}
 	componentDidUpdate(prevProps, prevState) {
 		if(this.state.selectedTrack !== prevState.selectedTrack) {
 			let track;
@@ -41,8 +55,14 @@ class AudioPlayer extends React.Component {
 			}
 		}
 	}
+	componentWillUnmount() {
+		this.player.removeEventListener("timeupdate", () => {});
+	}
 	render() {
-		const list = [{ id: 1, title: "Acroyali" }, {id: 2, title: "Felista" }].map(item => {
+		const list = [
+			{ id: 1, title: "Acroyali" }, 
+			{ id: 2, title: "Felista" }
+		].map(item => {
 			return (
 				<li
 					key={item.id}
@@ -52,6 +72,11 @@ class AudioPlayer extends React.Component {
 				</li>
 			);
 		});
+
+		const currentTime = getTime(this.state.currentTime);
+		const duration = getTime(this.state.duration);
+
+
 		return (
 		<div>
 			<h1>My Little Player</h1>
@@ -75,6 +100,15 @@ class AudioPlayer extends React.Component {
 					""
 				)}
 			</div>
+			
+			{this.state.player === "playing" || this.state.player === "paused" ? (
+				<div>
+					{currentTime} / {duration}
+				</div>
+			) : (
+				""
+			)}
+			
 			<audio ref={ref => this.player = ref} />
 		</div>
 		)
