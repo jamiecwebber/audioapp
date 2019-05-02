@@ -20,16 +20,19 @@ class UsersPing(Resource):
 	}
 
 class UsersList(Resource):
-
 	def post(self):
 		post_data = request.get_json()
 		response_object = {
-			'status': 'success',
-			'message': 'blah'
+			'status': 'fail',
+			'message': 'Invalid payload.'
 		}
+
+		if not post_data:
+			return response_object, 400
 		username = post_data.get('username')
 		email = post_data.get('email')
 		soundfile = request.files.get('soundfile')
+		print(soundfile)
 		filename = file.filename
 		destination ="/".join(['./audio', filename])
 		file.save(destination)
