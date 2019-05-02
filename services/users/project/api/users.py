@@ -20,13 +20,13 @@ class UsersPing(Resource):
 	}
 
 class UsersList(Resource):
+
 	def post(self):
 		post_data = request.get_json()
 		response_object = {
 			'status': 'success',
 			'message': 'blah'
 		}
-		return response_object, 201
 		username = post_data.get('username')
 		email = post_data.get('email')
 		soundfile = request.files.get('soundfile')
