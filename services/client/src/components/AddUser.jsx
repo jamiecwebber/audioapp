@@ -4,7 +4,7 @@ import axios from 'axios';
 class AddUser extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state {
+		this.state = {
 			username: this.props.username,
 			email: this.props.email
 		}
@@ -13,10 +13,9 @@ class AddUser extends React.Component {
 	}
 	addUser(event) {
 		event.preventDefault();
-		const data = {
-			username: this.state.username,
-			email: this.state.email,
-		};
+		const data = new FormData();
+		data.append('username', this.state.username);
+		data.append('email', this.state.email);
 		data.append('soundfile', this.uploadInput.files[0]);
 		axios.post(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`, data)
 		.then((res) => { 

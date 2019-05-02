@@ -23,16 +23,13 @@ class UsersList(Resource):
 	def post(self):
 		post_data = request.get_json()
 		response_object = {
-			'status': 'fail',
-			'message': 'Invalid payload.'
+			'status': 'success',
+			'message': 'blah'
 		}
-
-		if not post_data:
-			return response_object, 400
+		return response_object, 201
 		username = post_data.get('username')
 		email = post_data.get('email')
 		soundfile = request.files.get('soundfile')
-		print(soundfile)
 		filename = file.filename
 		destination ="/".join(['./audio', filename])
 		file.save(destination)
