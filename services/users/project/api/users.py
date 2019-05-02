@@ -4,9 +4,11 @@ from sqlalchemy import exc
 
 from flask import Blueprint, request, render_template
 from flask_restful import Resource, Api
+from werkzeug import secure_filename
 
 from project import db
 from project.api.models import User
+
 
 users_blueprint = Blueprint('users', __name__, template_folder='./templates')
 api = Api(users_blueprint)
@@ -60,7 +62,8 @@ class UsersList(Resource):
 			}
 		}
 		return response_object, 200
-		
+
+
 class Users(Resource):
 	def get(self, user_id):
 		"""Get single user details"""
@@ -85,6 +88,15 @@ class Users(Resource):
 				return response_object, 200
 		except ValueError:
 			return response_object, 404
+
+
+		
+@app.route('/uploader', methods = ['GET', 'POST'])
+def upload_file():
+   if request.method == 'POST':
+      f = request.files['file']
+      f.save(secure_filename(f.filename))
+      return 'file uploaded successfully'
 
 
 api.add_resource(UsersPing, '/users/ping')

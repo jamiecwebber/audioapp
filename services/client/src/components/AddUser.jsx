@@ -16,8 +16,9 @@ class AddUser extends React.Component {
 		const data = new FormData();
 		data.append('username', this.state.username);
 		data.append('email', this.state.email);
-		data.append('soundfile', this.uploadInput.files[0]);
-		axios.post(`${process.env.REACT_APP_USERS_SERVICE_URL}/users`, data)
+		data.append('file', this.uploadInput.files[0]);
+		console.log(process.env.REACT_APP_USERS_SERVICE_URL)
+		axios.post(`${process.env.REACT_APP_USERS_SERVICE_URL}/uploader`, data)
 		.then((res) => { 
 			this.getUsers();
 			this.setState({ username: '', email: '' });
@@ -43,21 +44,10 @@ class AddUser extends React.Component {
 						onChange={this.handleChange}
 					/>
 				</div>
-				<div className="field">
-					<input
-						name="email"
-						className="input is-large"
-						type="email"
-						placeholder="Enter an email address"
-						required
-						value={this.state.email}
-						onChange={this.handleChange}
-					/>
-				</div>
 				<input
 					type="file"
 					ref={(ref) => { this.uploadInput = ref; }}
-					name="soundfile"
+					name="file"
 					accept="audio/*"
 				/>
 				<input
