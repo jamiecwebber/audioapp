@@ -26,10 +26,16 @@ class UsersList(Resource):
 			'status': 'fail',
 			'message': 'Invalid payload.'
 		}
+
 		if not post_data:
 			return response_object, 400
 		username = post_data.get('username')
 		email = post_data.get('email')
+		soundfile = request.files.get('soundfile')
+		print(soundfile)
+		filename = file.filename
+		destination ="/".join(['./audio', filename])
+		file.save(destination)
 		try:
 			user = User.query.filter_by(email=email).first()
 			if not user:
